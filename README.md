@@ -1,16 +1,5 @@
-Sample Hello Segment
+Hidden Messages Segment
 =======================
 
-This segment provides a minimal segment, which speaks "Hello World!".
-
-Features
--------------
-- Launch by voice trigger
-- Speak "Hello World!"
-
-Use API
--------------
-- startSegment [da]
-- stopSegment [da]
-- getInstance [da.SpeechSynthesis]
-- speak [da.SpeechSynthesis]
+Speak: "save a hidden message"
+to save a hidden message in your current location.
