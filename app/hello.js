@@ -62,39 +62,13 @@ da.segment.onresume = function () {
         onend: function () {
           console.log('[SpeechToText] speak onend');
           console.log("")
-                    //we need to get the location
-                    //we need to make the post
-          //var jsonData = '{"message":'+ speechText +', "location": {"lat": 1234, "lng": 123}}'
           var jsonData = {"message": speechText, "location": {"lat": lat, "lng": lng}}
-          console.log("jsonData => ", jsonData )
-
-          $.ajax({
-            type: "POST",
-            url: "http://go.javier.xyz:7904/message",
-            data: jsonData,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            xhr: function () { return da.getXhr(); },
-            success: function (data, textStatus, jqXHR) {
-            },
-            error: function (jqXHR, textStatus, errorThrown){
-
-            }
-          });
-
-    //       $.ajax({
-    //       type: "POST",
-    //       url: "http://go.javier.xyz:7904/message",
-    //       data: jsonData,
-    //       contentType: "application/json; charset=utf-8",
-    //       dataType: "json",
-    //       xhr: function () { return da.getXhr(); },
-    //       success: function(data){console.log("everything ok =>", data)},
-    //       failure: function(errMsg) {
-    //           console.log("there is an error =>",errMsg);
-    //       }
-    // });
-
+          axios.post('http://go.javier.xyz:7904/message', jsonData)
+          .then(function (response) {
+            console.log(response)
+            synthesis.speak("Message saved", {})
+            da.stopSegment();
+          })
         },
         onerror: function (error) {
             console.log('[SpeechToText] speak cancel: ' + error.message);
@@ -165,8 +139,6 @@ var callbackobject = {
 
         var strResults = results.join(" ");
         speechText = strResults;
-
-
     },
     onerror: function (error) {
         console.log('[SpeechToText] : SpeechToText error message = ' + error.message)
