@@ -1,0 +1,10 @@
+{
+  "voicePattern": [
+    {
+      "domain": "HIDDENMESSAGEAPP",
+      "name": [
+        "save a hidden message"
+      ]
+    }
+  ]
+}
