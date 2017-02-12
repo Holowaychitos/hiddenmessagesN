@@ -24,6 +24,8 @@
  */
 
 var speechText;
+var lat;
+var lng;
 
 /**
  * The callback to prepare a segment for play.
@@ -33,7 +35,16 @@ var speechText;
 da.segment.onpreprocess = function (trigger, args) {
     console.log('[SpeechToText] onpreprocess', {trigger: trigger, args: args});
     speechText = "";
-    da.startSegment(null, null);
+
+    getCurrentPosition().then(function (result) {
+        lat = result.latitude
+        lng = result.longitude
+
+        da.startSegment(null, null);
+
+    }, function(){
+      da.cancelSegment();
+    });
 };
 
 /**
@@ -44,31 +55,46 @@ da.segment.onresume = function () {
     var synthesis = da.SpeechSynthesis.getInstance();
     console.log("synthesis on resume --->", synthesis);
     console.log("speechText on resume --->", speechText);
-    synthesis.speak('The result is ' + speechText, {
+    synthesis.speak('The message is ' + speechText, {
         onstart: function () {
             console.log('[SpeechToText] speak start');
         },
         onend: function () {
           console.log('[SpeechToText] speak onend');
-
+          console.log("")
                     //we need to get the location
                     //we need to make the post
-          var jsonData = '{"message:"'+speechText +', "location": {"lat": 1234, "lng": 123}}'
-          $.ajax({
-          type: "POST",
-          url: "http://go.javier.xyz:7904/message",
-          data: jsonData,
-          contentType: "application/json; charset=utf-8",
-          "Access-Control-Allow-Origin"  : '*',
-          "Access-Control-Allow-Headers" : 'Content-Type',
-          dataType: "json",
-          success: function(data){console.log("everything ok =>", data)},
-          failure: function(errMsg) {
-              console.log("there is an error =>",errMsg);
-          }
-    });
+          //var jsonData = '{"message":'+ speechText +', "location": {"lat": 1234, "lng": 123}}'
+          var jsonData = {"message": speechText, "location": {"lat": lat, "lng": lng}}
+          console.log("jsonData => ", jsonData )
 
-            // da.stopSegment();
+          $.ajax({
+            type: "POST",
+            url: "http://go.javier.xyz:7904/message",
+            data: jsonData,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            xhr: function () { return da.getXhr(); },
+            success: function (data, textStatus, jqXHR) {
+            },
+            error: function (jqXHR, textStatus, errorThrown){
+
+            }
+          });
+
+    //       $.ajax({
+    //       type: "POST",
+    //       url: "http://go.javier.xyz:7904/message",
+    //       data: jsonData,
+    //       contentType: "application/json; charset=utf-8",
+    //       dataType: "json",
+    //       xhr: function () { return da.getXhr(); },
+    //       success: function(data){console.log("everything ok =>", data)},
+    //       failure: function(errMsg) {
+    //           console.log("there is an error =>",errMsg);
+    //       }
+    // });
+
         },
         onerror: function (error) {
             console.log('[SpeechToText] speak cancel: ' + error.message);
