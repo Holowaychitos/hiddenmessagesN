@@ -40,6 +40,13 @@ da.segment.onpreprocess = function (trigger, args) {
         lat = result.latitude
         lng = result.longitude
 
+        da.getSegmentConfig({
+          onsuccess: function (settingsData) {
+            da.startSegment(null, null);
+            },
+            onerror: function (error) {
+            }
+        })
         da.startSegment(null, null);
 
     }, function(){

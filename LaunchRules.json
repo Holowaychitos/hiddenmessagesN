@@ -4,6 +4,11 @@
       "domain": "HIDDENMESSAGEAPP",
       "name": [
         "save a hidden message"
+      ],
+      "phrase": [
+        "save a hidden message",
+        "save a hidden messages",
+        ".*"
       ]
     }
   ]

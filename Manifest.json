@@ -1,11 +1,11 @@
 {
-  "package": "com.example.sony.da.hello",
+  "package": "com.holowaychitos.hiddenmessage",
   "manifestVersion": 1,
-  "name": "Hello",
+  "name": "Hidden Message",
   "author": {
-    "name": "Sony"
+    "name": "Holowaychitos"
   },
-  "version": 1,
-  "versionName": "1.0.0",
-  "description": "Sony Corporation\nSpeaks 'Hello World!'"
+  "version": 3,
+  "versionName": "1.0.2",
+  "description": "Find and create hidden messages in space "
 }
